@@ -14,7 +14,13 @@ class CreateKurirsTable extends Migration
     public function up()
     {
         Schema::create('kurirs', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id_user');                       
+            $table->string('nama');
+            $table->string('alamat');
+            $table->string('nomor_hp');
+            $table->string('foto');
+            $table->string('status_user');
+            $table->string('status_order');
             $table->timestamps();
         });
     }
