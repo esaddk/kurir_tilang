@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/dashboard', 'DashboardController@dashboard');
+Route::get('/admins', 'AdminController@index');
