@@ -134,6 +134,15 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{ route('GetAllUnpaidOrder') }}" class="nav-link">
+                  <i class="fa fa-circle-o nav-icon"></i>
+                  <p>
+                  Wait Payment
+                  <span class="right badge badge-danger">5</span>
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="../charts/flot.html" class="nav-link">
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>On Progress</p>

@@ -23,11 +23,23 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 
-// Order
+//Create Order
 Route::get('/CreateOrder', 'OrderController@CreateOrder')->name('CreateOrder');
 Route::post('/SubmitOrder', 'OrderController@SubmitOrder')->name('SubmitOrder');
+
+//Validasi Data
 Route::get('/GetAllPendingOrder', 'OrderController@GetAllPendingOrder')->name('GetAllPendingOrder');
 Route::get('/GetPendingOrder/{id}', 'OrderController@GetPendingOrder')->name('GetPendingOrder');
 Route::post('/SubmitValidasi', 'OrderController@SubmitValidasi')->name('SubmitValidasi');
+
+//Validasi Transfer Ongkir
+Route::get('/GetAllUnpaidOrder', 'OrderController@GetAllUnpaidOrder')->name('GetAllUnpaidOrder');
+Route::get('/GetUnpaidOrder/{id}', 'OrderController@GetUnpaidOrder')->name('GetUnpaidOrder');
+Route::post('/SubmitFotoTransfer', 'OrderController@SubmitFotoTransfer')->name('SubmitFotoTransfer');
+Route::get('/ValidateTransferOrder/{id}', 'OrderController@ValidateTransferOrder')->name('ValidateTransferOrder');
+Route::post('/SubmitValidTransfer', 'OrderController@SubmitValidTransfer')->name('SubmitValidTransfer');
+
+
+
 
 

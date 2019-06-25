@@ -22,6 +22,8 @@ class CreateOrdersTable extends Migration
             $table->string('penerima');
             $table->string('alamat');
             $table->string('biaya_kirim');
+            $table->string('status_pembayaran');
+            $table->string('foto_transfer')->default('kosong');
             $table->string('nomor_hp');
             $table->string('foto');
             $table->string('status_data');

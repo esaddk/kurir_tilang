@@ -135,6 +135,15 @@
                 </a>
               </li>
               <li class="nav-item">
+                <a href="{{ route('GetAllUnpaidOrder') }}" class="nav-link">
+                  <i class="fa fa-circle-o nav-icon"></i>
+                  <p>
+                  Wait Payment
+                  <span class="right badge badge-danger">5</span>
+                  </p>
+                </a>
+              </li>
+              <li class="nav-item">
                 <a href="../charts/flot.html" class="nav-link">
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>On Progress</p>
@@ -229,14 +238,16 @@
 <script src="{{ asset('js/sweetalert.min.js')}}"></script>
 <script>
         $(function () {
-          $("#example1").DataTable();
-          $('#example2').DataTable({
+          $("#example2").DataTable();
+          $('#example1').DataTable({
             "paging": true,
             "lengthChange": false,
-            "searching": false,
+            "searching": true,
             "ordering": true,
             "info": true,
-            "autoWidth": false,
+            "autoWidth": true,
+            "scrollX": true,
+            "sScrollX":"100%",    
           });
         });
       </script>
