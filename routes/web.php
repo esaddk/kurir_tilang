@@ -46,3 +46,10 @@ Route::get('/WaitPaymentConfirmation', 'OrderController@WaitPaymentConfirmation'
 Route::get('/KurirConfirmOrder/{id}', 'OrderController@KurirConfirmOrder')->name('KurirConfirmOrder');
 Route::get('/KurirRejectOrder', 'OrderController@KurirRejectOrder')->name('KurirRejectOrder');
 
+// Get Onprogress Order
+Route::get('/GetAllOnprogressOrder', 'OrderController@GetAllOnprogressOrder')->name('GetAllOnprogressOrder');
+Route::get('/GetOnprogressOrder/{id}', 'OrderController@GetOnprogressOrder')->name('GetOnprogressOrder');
+Route::post('/UpdateStatusPengiriman', 'OrderController@UpdateStatusPengiriman')->name('UpdateStatusPengiriman');
+
+
+

@@ -164,7 +164,7 @@
               @endif
               {{-- @endcan --}}
               <li class="nav-item">
-                <a href="../charts/flot.html" class="nav-link">
+                <a href="{{ route('GetAllOnprogressOrder') }}" class="nav-link">
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>On Progress</p>
                 </a>

@@ -312,9 +312,60 @@ class OrderController extends Controller
             }
     }
 
+    public function GetAllOnprogressOrder()
+    {
+        $role = Auth::user()->role;
+        $id   = Auth::user()->id;
+
+        if ($role == 'admin') {
+            $order = DB::table('orders')
+                    ->where('status_data', 'valid')                    
+                    ->where('status_pembayaran', 'paid')  
+                    ->where('pengiriman_id', '!=' ,'0')                 
+                    ->get();  
+            // return $order;      
+            return view('admin.onprogress_order', compact('order'));
+        }
+        elseif ($role == 'kurir'){
+            $order = DB::table('orders')
+                    ->where('status_data', 'valid')                    
+                    ->where('status_pembayaran', 'paid')  
+                    ->where('pengiriman_id', '!=' ,'0')    
+                    ->where('kurir_id', $id)             
+                    ->get();  
+            // return $order;      
+            return view('admin.onprogress_order', compact('order'));
+        }
+        elseif ($role == 'customer'){
+            $order = DB::table('orders')
+                    ->where('status_data', 'valid')                    
+                    ->where('status_pembayaran', 'paid')  
+                    ->where('pengiriman_id', '!=' ,'0')    
+                    ->where('customer_id', $id)             
+                    ->get();  
+            // return $order;      
+            return view('admin.onprogress_order', compact('order'));
+        }
+        
+        
+    }
+
+    public function GetOnprogressOrder($id)
+    {
+        // return $id;
+        $pengiriman = DB::table('pengirimen')
+                    // ->where('status_data', 'valid')                    
+                    // ->where('status_pembayaran', 'paid')  
+                    // ->where('pengiriman_id', '!=' ,'0')    
+                    ->where('order_id', $id)             
+                    ->first();         
+        // return $order;
+        return view('kurir.update_pengiriman', compact('pengiriman'));
+    }
+
     function UpdateStatusPengiriman(Request $request)
     {
-        
+        // return  $request;
         try {        
 
             $kurir_id = DB::table('users')
@@ -333,7 +384,7 @@ class OrderController extends Controller
             ));
             
         Alert::success('Status Pengirim Berhasil Diupdate');        
-        return redirect(route('CreateOrder'));
+        return redirect(route('GetAllOnprogressOrder'));
         } catch (\Exception $e) {
             return  $e->getMessage();
         }
