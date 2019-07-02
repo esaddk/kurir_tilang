@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use RealRashid\SweetAlert\Facades\Alert;
 use App\kurir;
+use App\pengiriman;
 
 class OrderController extends Controller
 {    
@@ -84,7 +85,7 @@ class OrderController extends Controller
         $order->biaya_kirim = '0';
         $order->foto = $photo;
         $order->status_data = 'unvalidate';
-        $order->status_pengiriman = '';
+        $order->pengiriman_id = '';
         $order->save();   
 
         Alert::success('Data Berhasil ditambahkan', 'Mohon menunggu validasi oleh admin');
@@ -108,19 +109,21 @@ class OrderController extends Controller
             // return $order[0]->penerima;      
             return view('admin.pending_order', compact('order'));
         }
-        elseif ($role == 'kurir'){
-            return 'hehe';
+        elseif ($role == 'kurir'){            
             $order = DB::table('orders')
-                    ->where('status_data', 'unvalidate')
-                    ->orWhere('kurir_id', $id)
+                    ->where('status_data', 'valid')
+                    ->where('kurir_id', $id)
+                    ->where('status_pembayaran', 'paid')  
+                    ->where('pengiriman_id', '0')  
                     ->get();
-            return $order;
+            // return $order;
+            return view('admin.pending_order', compact('order'));
         }
         elseif ($role == 'customer'){
             return 'ahai';
             $order = DB::table('orders')
                     ->where('status_data', 'unvalidate')
-                    ->orWhere('kurir_id', $id)
+                    ->where('customer_id', $id)
                     ->get();      
             return $order;
         }  
@@ -282,6 +285,59 @@ class OrderController extends Controller
                    
     }
 
+    function KurirConfirmOrder($id)
+    {
+        // return $id;          
+        
+        try {            
+
+            $pengiriman = new pengiriman();         
+            $pengiriman->order_id = $id;      
+            $pengiriman->diambil = "ok";           
+            $pengiriman->save();   
+
+            $pengiriman_id = DB::table('pengirimen')
+                        ->where('order_id', $id)                    
+                        ->take(1)->get();
+            // return $kurir_id[0]->id;                        
+
+            order::where('id', $id)
+            ->update(array('pengiriman_id' => $pengiriman_id[0]->id));
+    
+            Alert::success('Order Berhasil Dikonfirmasi', 'Silahkan Melanjutkan Proses Pengurusan Tilang');
+            // Alert::toast('Data Berhasil ditambahkan','success');
+            return redirect(route('GetAllPendingOrder'));
+            } catch (\Exception $e) {
+                return  $e->getMessage();
+            }
+    }
+
+    function UpdateStatusPengiriman(Request $request)
+    {
+        
+        try {        
+
+            $kurir_id = DB::table('users')
+                        ->where('status_kurir', 'available')                    
+                        ->orderBy('updated_at', 'ASC')
+                        ->take(1)->get();
+            // return $kurir_id[0]->id;                        
+
+            pengiriman::where('id', $request['id'])
+            ->update(array(
+                'diambil'       => $request['diambil'],
+                'antri'         => $request['antri'],
+                'diantar'       => $request['diantar'],
+                'diterima'      => $request['diterima'],
+                'nama_penerima' => $request['nama_penerima'],
+            ));
+            
+        Alert::success('Status Pengirim Berhasil Diupdate');        
+        return redirect(route('CreateOrder'));
+        } catch (\Exception $e) {
+            return  $e->getMessage();
+        }
+    }
     
     
     

@@ -139,6 +139,7 @@
                   </p>
                 </a>
               </li>
+              @if(Gate::check('isCustomer') || Gate::check('isAdmin'))
               <li class="nav-item">
                 <a href="{{ route('GetAllUnpaidOrder') }}" class="nav-link">
                   <i class="fa fa-circle-o nav-icon"></i>
@@ -148,15 +149,19 @@
                   </p>
                 </a>
               </li>
+              @endif
+              @if(Gate::check('isCustomer') || Gate::check('isAdmin'))
               <li class="nav-item">
-                <a href="{{ route('GetAllUnpaidOrder') }}" class="nav-link">
+                <a href="{{ route('WaitPaymentConfirmation') }}" class="nav-link">
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>
-                  Wait Payment Confirmation
+                  Wait Confirmation
                   <span class="right badge badge-danger">5</span>
                   </p>
                 </a>
               </li>
+              @endif
+              {{-- @endcan --}}
               <li class="nav-item">
                 <a href="../charts/flot.html" class="nav-link">
                   <i class="fa fa-circle-o nav-icon"></i>

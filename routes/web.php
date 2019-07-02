@@ -42,4 +42,7 @@ Route::post('/SubmitValidTransfer', 'OrderController@SubmitValidTransfer')->name
 // GetUnconfirmedTransfer
 Route::get('/WaitPaymentConfirmation', 'OrderController@WaitPaymentConfirmation')->name('WaitPaymentConfirmation');
 
+// Kurir Konfirmasi Order
+Route::get('/KurirConfirmOrder/{id}', 'OrderController@KurirConfirmOrder')->name('KurirConfirmOrder');
+Route::get('/KurirRejectOrder', 'OrderController@KurirRejectOrder')->name('KurirRejectOrder');
 

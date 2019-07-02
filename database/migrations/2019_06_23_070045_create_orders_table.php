@@ -27,7 +27,7 @@ class CreateOrdersTable extends Migration
             $table->string('nomor_hp');
             $table->string('foto');
             $table->string('status_data');
-            $table->string('status_pengiriman');
+            $table->string('pengiriman_id');
             $table->timestamps();
         });
     }

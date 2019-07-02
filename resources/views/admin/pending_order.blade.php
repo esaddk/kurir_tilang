@@ -52,14 +52,30 @@
                     {{-- <form action="{{ route('produk.destroy', $row->id) }}" method="POST"> --}}
                     <form action="#" method="post">
                         @csrf
+                        {{-- @if(Gate::check('isCustomer') || Gate::check('isAdmin')) --}}
                         <input type="hidden" name="_method" value="DELETE">                        
                         <a href="{{ route('GetPendingOrder', [$row->id]) }}" 
                             class="btn btn-warning btn-sm">
                             <i class="fa fa-edit"></i>
                         </a>
+                        {{-- @endif --}}
+                        @can('isAdmin')
                         <button class="btn btn-danger btn-sm">
                             <i class="fa fa-trash"></i>
                         </button>
+                        @endcan
+                        @can('isKurir')
+                        <a href="{{ route('KurirConfirmOrder', [$row->id]) }}" 
+                            class="btn btn-success btn-sm">
+                            <i class="fa fa-check"></i>
+                        </a>
+                        @endcan
+                        @can('isKurir')
+                        <a href="{{ route('KurirRejectOrder', [$row->id]) }}" 
+                            class="btn btn-danger btn-sm">
+                            <i class="fa fa-exclamation-circle"></i>
+                        </a>
+                        @endcan
                     </form>
                 </td>
             </tr>
