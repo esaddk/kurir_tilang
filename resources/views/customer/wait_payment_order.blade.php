@@ -61,8 +61,8 @@
                         </a>
                         @can('isAdmin')
                         <a href="{{ route('ValidateTransferOrder', [$row->id]) }}" 
-                            class="btn btn-warning btn-sm">
-                            <i class="fa fa-edit"></i>
+                            class="btn btn-success btn-sm">
+                            <i class="fa fa-check"></i>
                         </a>
                         @endcan
                         <button class="btn btn-danger btn-sm">

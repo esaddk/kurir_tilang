@@ -166,7 +166,7 @@ class OrderController extends Controller
             $order = DB::table('orders')
                     ->where('status_data', 'valid')                    
                     ->where('status_pembayaran', 'unpaid')  
-                    ->where('foto_transfer', '!=', 'kosong')                    
+                    ->where('biaya_kirim', '=', null)                    
                     ->get();  
             // return $order[0]->penerima;      
             return view('admin.unpaid_order', compact('order'));
@@ -182,7 +182,8 @@ class OrderController extends Controller
         elseif ($role == 'customer'){
             $order = DB::table('orders')
                     ->where('status_data', 'valid')                    
-                    ->where('status_pembayaran', 'unpaid')                    
+                    ->where('status_pembayaran', 'unpaid')   
+                    ->where('foto_transfer', '=', 'kosong')                      
                     ->get();  
             // return $order[0]->penerima;      
             return view('admin.unpaid_order', compact('order'));
@@ -253,6 +254,32 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             return  $e->getMessage();
         }
+    }
+
+    public function WaitPaymentConfirmation()
+    {
+        $role = Auth::user()->role;
+        $id   = Auth::user()->id;
+
+        if ($role == 'customer'){
+            $order = DB::table('orders')
+                    ->where('status_data', 'valid')                    
+                    ->where('status_pembayaran', 'unpaid')   
+                    ->where('foto_transfer', '!=', 'kosong')                      
+                    ->get();  
+            // return $order[0]->penerima;      
+            return view('customer.wait_payment_order', compact('order'));
+        }  
+        elseif ($role == 'admin'){
+            $order = DB::table('orders')
+                    ->where('status_data', 'valid')                    
+                    ->where('status_pembayaran', 'unpaid')                       
+                    ->where('foto_transfer', '!=', 'kosong')                     
+                    ->get();  
+            // return $order[0]->penerima;      
+            return view('customer.wait_payment_order', compact('order'));
+        }   
+                   
     }
 
     

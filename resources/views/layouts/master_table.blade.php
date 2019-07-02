@@ -90,7 +90,7 @@
           <img src="adminlte/dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div>
         <div class="info">
-          <a href="#" class="d-block">{{ Auth::user()->name }}</a>
+          <a href="#" class="d-block">{{ Auth::user()->role }}</a>
         </div>
       </div>
 
@@ -99,15 +99,20 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
+
+          {{-- @can('isAdmin') --}}
+          @if(Gate::check('isKurir') || Gate::check('isAdmin'))
           <li class="nav-item">
             <a href="{{ route('dashboard') }}" class="nav-link {{ request()->is('dashboard*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-dashboard"></i>
               <p>
                 Dashboard                
               </p>
-            </a>
-            
+            </a>            
           </li>
+          @endif
+          {{-- @endcan --}}
+          @can('isCustomer')
           <li class="nav-item">
             <a href="{{ route('CreateOrder') }}" class="nav-link {{ request()->is('CreateOrder*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-th"></i>
@@ -116,6 +121,7 @@
               </p>
             </a>
           </li>
+          @endcan
           <li class="nav-item has-treeview">
             <a href="#" class="nav-link">
               <i class="nav-icon fa fa-pie-chart"></i>
@@ -143,6 +149,17 @@
                   </p>
                 </a>
               </li>
+              {{-- @can('isCustomer') --}}
+              <li class="nav-item">
+                <a href="{{ route('WaitPaymentConfirmation') }}" class="nav-link">
+                  <i class="fa fa-circle-o nav-icon"></i>
+                  <p>
+                  Wait Confirmation
+                  <span class="right badge badge-danger">5</span>
+                  </p>
+                </a>
+              </li>
+              {{-- @endcan --}}
               <li class="nav-item">
                 <a href="../charts/flot.html" class="nav-link">
                   <i class="fa fa-circle-o nav-icon"></i>
@@ -157,30 +174,36 @@
               </li>
             </ul>
           </li>
+          @can('isAdmin') 
           <li class="nav-item">
               <a href="../widgets.html" class="nav-link">
                 <i class="nav-icon fa fa-th"></i>
                 <p>
-                  Petugas
+                  Master Petugas
                 </p>
               </a>
           </li>
+          @endcan
+          @can('isAdmin') 
           <li class="nav-item">
               <a href="../widgets.html" class="nav-link">
                 <i class="nav-icon fa fa-th"></i>
                 <p>
-                  Kurir
+                  Master Kurir
                 </p>
               </a>
           </li>
+          @endcan
+          @can('isAdmin') 
           <li class="nav-item">
               <a href="../widgets.html" class="nav-link">
                 <i class="nav-icon fa fa-th"></i>
                 <p>
-                  Customer
+                  Master Customer
                 </p>
               </a>
           </li>
+          @endcan
           <li class="nav-item">
               <a href="{{ route('logout') }}" class="nav-link">
                 <i class="nav-icon fa fa-th"></i>
@@ -245,9 +268,7 @@
             "searching": true,
             "ordering": true,
             "info": true,
-            "autoWidth": true,
-            "scrollX": true,
-            "sScrollX":"100%",    
+            "autoWidth": true,                      
           });
         });
       </script>

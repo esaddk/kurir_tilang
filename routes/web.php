@@ -39,7 +39,7 @@ Route::post('/SubmitFotoTransfer', 'OrderController@SubmitFotoTransfer')->name('
 Route::get('/ValidateTransferOrder/{id}', 'OrderController@ValidateTransferOrder')->name('ValidateTransferOrder');
 Route::post('/SubmitValidTransfer', 'OrderController@SubmitValidTransfer')->name('SubmitValidTransfer');
 
-
-
+// GetUnconfirmedTransfer
+Route::get('/WaitPaymentConfirmation', 'OrderController@WaitPaymentConfirmation')->name('WaitPaymentConfirmation');
 
 
