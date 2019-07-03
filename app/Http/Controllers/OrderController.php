@@ -318,7 +318,9 @@ class OrderController extends Controller
         $id   = Auth::user()->id;
 
         if ($role == 'admin') {
-            $order = DB::table('orders')
+            $order = order::whereHas('pengiriman', function ($query) use($id) {
+                $query->where('diterima', '!=', 'ok');
+            })
                     ->where('status_data', 'valid')                    
                     ->where('status_pembayaran', 'paid')  
                     ->where('pengiriman_id', '!=' ,'0')                 
@@ -327,7 +329,9 @@ class OrderController extends Controller
             return view('admin.onprogress_order', compact('order'));
         }
         elseif ($role == 'kurir'){
-            $order = DB::table('orders')
+            $order = order::whereHas('pengiriman', function ($query) use($id) {
+                $query->where('diterima', '!=', 'ok');
+            })
                     ->where('status_data', 'valid')                    
                     ->where('status_pembayaran', 'paid')  
                     ->where('pengiriman_id', '!=' ,'0')    
@@ -337,7 +341,9 @@ class OrderController extends Controller
             return view('admin.onprogress_order', compact('order'));
         }
         elseif ($role == 'customer'){
-            $order = DB::table('orders')
+            $order = order::whereHas('pengiriman', function ($query) use($id) {
+                $query->where('diterima', '!=', 'ok');
+            })
                     ->where('status_data', 'valid')                    
                     ->where('status_pembayaran', 'paid')  
                     ->where('pengiriman_id', '!=' ,'0')    
@@ -388,6 +394,36 @@ class OrderController extends Controller
         } catch (\Exception $e) {
             return  $e->getMessage();
         }
+    }
+
+    public function GetAllCompleteOrder()
+    {
+        $role = Auth::user()->role;
+        $id   = Auth::user()->id;
+
+        if ($role == 'admin') {
+            $order = order::whereHas('pengiriman', function ($query) use($id) {
+                $query->where('diterima', '=', 'ok');
+            })->get();  
+            // return $order;      
+            return view('admin.complete_order', compact('order'));
+        }
+        elseif ($role == 'kurir'){
+            $order = order::whereHas('pengiriman', function ($query) use($id) {
+                $query->where('diterima', '=', 'ok');
+            })->where('kurir_id', $id)->get();
+            // return $order;      
+            return view('admin.complete_order', compact('order'));
+        }
+        elseif ($role == 'customer'){
+            $order = order::whereHas('pengiriman', function ($query) use($id) {
+                $query->where('diterima', '=', 'ok');
+            })->where('customer_id', $id)->get();  
+            // return $order;      
+            return view('admin.complete_order', compact('order'));
+        }
+        
+        
     }
     
     

@@ -169,7 +169,7 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="../charts/inline.html" class="nav-link">
+                <a href="{{ route('GetAllCompleteOrder') }}" class="nav-link">
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>Complete</p>
                 </a>

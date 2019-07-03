@@ -51,5 +51,6 @@ Route::get('/GetAllOnprogressOrder', 'OrderController@GetAllOnprogressOrder')->n
 Route::get('/GetOnprogressOrder/{id}', 'OrderController@GetOnprogressOrder')->name('GetOnprogressOrder');
 Route::post('/UpdateStatusPengiriman', 'OrderController@UpdateStatusPengiriman')->name('UpdateStatusPengiriman');
 
-
+// Get Complete Order
+Route::get('/GetAllCompleteOrder', 'OrderController@GetAllCompleteOrder')->name('GetAllCompleteOrder');
 

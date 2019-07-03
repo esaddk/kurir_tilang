@@ -12,4 +12,9 @@ class order extends Model
         'pengiriman_id',
 
     ];
+
+    public function pengiriman()
+    {
+        return $this->belongsTo(pengiriman::class);
+    }
 }
