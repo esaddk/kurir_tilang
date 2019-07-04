@@ -66,13 +66,13 @@
                             <i class="fa fa-trash"></i>
                         </button>
                         @endcan
-                        @can('isKurir')
+                        @can('isAdmin')
                         <a href="{{ route('KurirConfirmOrder', [$row->id]) }}" 
                             class="btn btn-success btn-sm">
                             <i class="fa fa-check"></i>
                         </a>
                         @endcan
-                        @can('isKurir')
+                        @can('isAdmin')
                         <a href="{{ route('KurirRejectOrder', [$row->id]) }}" 
                             class="btn btn-danger btn-sm">
                             <i class="fa fa-exclamation-circle"></i>

@@ -25,6 +25,8 @@ class OrderController extends Controller
 
     public function CreateOrder()
     {
+        // Alert::message('Thanks for comment!')->persistent('Close');
+        Alert::warning('Mohon Membaca Syarat dan Ketentuan', '')->persistent('Close');
         return view('order.create');
     }
 
@@ -177,7 +179,7 @@ class OrderController extends Controller
 
         Notification::send($users, new NeedPayment());      
 
-        return redirect(route('CreateOrder'));
+        return redirect(route('GetAllPendingOrder'));
         } catch (\Exception $e) {
             return  $e->getMessage();
         }
@@ -243,7 +245,7 @@ class OrderController extends Controller
             ->update(array('foto_transfer' => $photo));
             
         Alert::success('Bukti Transfer Berhasil ditambahkan', 'Mohon menunggu validasi oleh admin');
-        return redirect(route('CreateOrder'));
+        return redirect(route('WaitPaymentConfirmation'));
         } catch (\Exception $e) {
             return  $e->getMessage();
         }
@@ -492,12 +494,14 @@ class OrderController extends Controller
         
     }
 
-    public function DetailOrder()
+    public function DetailOrder($id)
     {
         // $this->sendSMS();
         // $users= DB::table('users')
         // ->where('id', '3')                            
         // ->get();
+
+        // return $id;
 
         $users = User::where('id', 3)->get();
 
@@ -506,30 +510,27 @@ class OrderController extends Controller
         // Notification::send($users, new NeedPayment());
 
         $role = Auth::user()->role;
-        $id   = Auth::user()->id;
+        $id_user   = Auth::user()->id;
 
         if ($role == 'admin') {
-            $order = order::whereHas('pengiriman', function ($query) use($id) {
-                $query->where('diterima', '=', 'ok');
-            })->with('pengiriman')->get();  
+            $order = order::where('id',$id)->with('pengiriman')->get(); 
+            $driver = User::where('id', $order[0]->kurir_id)->get();  
             // return $order;      
-            return view('admin.complete_order', compact('order'));
+            return view('admin.detail_order', compact('order','driver'));
         }
         elseif ($role == 'kurir'){
-            $order = order::whereHas('pengiriman', function ($query) use($id) {
-                $query->where('diterima', '=', 'ok');
-            })->where('kurir_id', $id)->with('pengiriman')->get();
+            $order = order::where('kurir_id', $id_user)->where('id',$id)->with('pengiriman')->get(); 
+            $driver = User::where('id', $order[0]->kurir_id)->get(); 
+
             // return $order;      
-            return view('admin.complete_order', compact('order'));
+            return view('admin.detail_order', compact('order','driver'));
         }
         elseif ($role == 'customer'){
-            $order = order::whereHas('pengiriman', function ($query) use($id) {
-                $query->where('diterima', '=', 'ok');
-            })->where('customer_id', $id)->with('pengiriman')->get();  
+            $order = order::where('customer_id', $id_user)->where('id',$id)->with('pengiriman')->get();  
             // return $order[0]->kurir_id; 
             $driver = User::where('id', $order[0]->kurir_id)->get();
             // return $order[0]->pengiriman->diambil;   
-            // return $order;         
+            //  return $order;         
             return view('admin.detail_order', compact('order','driver'));
         }
         
