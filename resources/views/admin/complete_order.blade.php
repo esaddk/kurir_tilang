@@ -53,11 +53,13 @@
                     <form action="#" method="post">
                         @csrf
                         {{-- @if(Gate::check('isCustomer') || Gate::check('isAdmin')) --}}
+                        @can('isAdmin')
                         <input type="hidden" name="_method" value="DELETE">                        
                         <a href="{{ route('GetPendingOrder', [$row->id]) }}" 
                             class="btn btn-warning btn-sm">
                             <i class="fa fa-edit"></i>
                         </a>
+                        @endcan
                         {{-- @endif --}}
                         @can('isAdmin')
                         <button class="btn btn-danger btn-sm">
@@ -75,7 +77,11 @@
                             class="btn btn-danger btn-sm">
                             <i class="fa fa-exclamation-circle"></i>
                         </a>
-                        @endcan
+                        @endcan                        
+                        <a href="{{ route('DetailOrder', [$row->id]) }}" 
+                            class="btn btn-info btn-sm">
+                            <i class="fa fa-eye"></i>
+                        </a>                        
                     </form>
                 </td>
             </tr>

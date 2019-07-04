@@ -491,6 +491,50 @@ class OrderController extends Controller
         
         
     }
+
+    public function DetailOrder()
+    {
+        // $this->sendSMS();
+        // $users= DB::table('users')
+        // ->where('id', '3')                            
+        // ->get();
+
+        $users = User::where('id', 3)->get();
+
+        // return $users;
+
+        // Notification::send($users, new NeedPayment());
+
+        $role = Auth::user()->role;
+        $id   = Auth::user()->id;
+
+        if ($role == 'admin') {
+            $order = order::whereHas('pengiriman', function ($query) use($id) {
+                $query->where('diterima', '=', 'ok');
+            })->with('pengiriman')->get();  
+            // return $order;      
+            return view('admin.complete_order', compact('order'));
+        }
+        elseif ($role == 'kurir'){
+            $order = order::whereHas('pengiriman', function ($query) use($id) {
+                $query->where('diterima', '=', 'ok');
+            })->where('kurir_id', $id)->with('pengiriman')->get();
+            // return $order;      
+            return view('admin.complete_order', compact('order'));
+        }
+        elseif ($role == 'customer'){
+            $order = order::whereHas('pengiriman', function ($query) use($id) {
+                $query->where('diterima', '=', 'ok');
+            })->where('customer_id', $id)->with('pengiriman')->get();  
+            // return $order[0]->kurir_id; 
+            $driver = User::where('id', $order[0]->kurir_id)->get();
+            // return $order[0]->pengiriman->diambil;   
+            // return $order;         
+            return view('admin.detail_order', compact('order','driver'));
+        }
+        
+        
+    }
     
     
     
