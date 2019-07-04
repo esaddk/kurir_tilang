@@ -16,6 +16,9 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use RealRashid\SweetAlert\Facades\Alert;
+use App\Notifications\OrderOnprogress;
+use App\Notifications\KonfirmasiKurir;
+use App\Notifications\OrderComplete;
 
 class OrderController extends Controller
 {    
@@ -98,7 +101,7 @@ class OrderController extends Controller
         $order->biaya_kirim = '0';
         $order->foto = $photo;
         $order->status_data = 'unvalidate';
-        $order->pengiriman_id = '';
+        // $order->pengiriman_id = '';
         $order->save();   
 
         Alert::success('Data Berhasil ditambahkan', 'Mohon menunggu validasi oleh admin');
@@ -127,19 +130,17 @@ class OrderController extends Controller
                     ->where('status_data', 'valid')
                     ->where('kurir_id', $id)
                     ->where('status_pembayaran', 'paid')  
-                    ->where('pengiriman_id', '0')  
+                    ->where('pengiriman_id', null)  
                     ->get();
             // return $order;
             return view('admin.pending_order', compact('order'));
         }
-        elseif ($role == 'customer'){
-            return 'ahai';
+        elseif ($role == 'customer'){        
             $order = DB::table('orders')
                     ->where('status_data', 'unvalidate')
                     ->where('customer_id', $id)
                     ->get();      
-            return $order;
-        }  
+                    return view('admin.pending_order', compact('order'));                }  
         
     }
 
@@ -157,7 +158,13 @@ class OrderController extends Controller
 
     function SubmitValidasi(Request $request)
     {
-        
+        $order = order::where('kode_order', $request['kode_order'])->get();
+        $customer_id = $order[0]->customer_id;
+        // return $order[0]->customer_id;        
+        $users = User::where('id', $customer_id)->get();
+
+        // return $users;
+
         try {        
             $id   = Auth::user()->id;
 
@@ -166,7 +173,10 @@ class OrderController extends Controller
                             'status_data' => $request['status_data'],
                             'admin_id' => $id));
             
-        Alert::success('Data Berhasil divalidasi');        
+        Alert::success('Data Berhasil divalidasi');  
+
+        Notification::send($users, new NeedPayment());      
+
         return redirect(route('CreateOrder'));
         } catch (\Exception $e) {
             return  $e->getMessage();
@@ -182,7 +192,7 @@ class OrderController extends Controller
             $order = DB::table('orders')
                     ->where('status_data', 'valid')                    
                     ->where('status_pembayaran', 'unpaid')  
-                    ->where('biaya_kirim', '=', null)                    
+                    ->where('foto_transfer', '=', null)                    
                     ->get();  
             // return $order[0]->penerima;      
             return view('admin.unpaid_order', compact('order'));
@@ -241,6 +251,8 @@ class OrderController extends Controller
 
     public function ValidateTransferOrder($id)
     {
+        
+        
         // return $id;
         $order = order::findOrFail($id);        
         // $kurir = DB::table('users')
@@ -254,19 +266,30 @@ class OrderController extends Controller
     {
         
         try {        
+            // $order = order::where('kode_order', $request['kode_order'])->get();
+            // $customer_id = $order[0]->customer_id;
+            // // return $customer_id;        
+            // $users = User::where('id', $customer_id)->get();
+            // // Notification::send($users, new NeedPayment());      
+
 
             $kurir_id = DB::table('users')
                         ->where('status_kurir', 'available')                    
                         ->orderBy('updated_at', 'ASC')
                         ->take(1)->get();
-            // return $kurir_id[0]->id;                        
+            // return $kurir_id[0]->id;   
+            $users = User::where('id', $kurir_id[0]->id)->get();                     
 
             order::where('kode_order', $request['kode_order'])
             ->update(array('status_pembayaran' => $request['status_pembayaran'],
                             'kurir_id' => $kurir_id[0]->id));
             
-        Alert::success('Data Berhasil divalidasi','Akan dilanjutkan pencarian kurir');        
-        return redirect(route('CreateOrder'));
+        Alert::success('Data Berhasil divalidasi','Akan dilanjutkan pencarian kurir');
+
+        Notification::send($users, new KonfirmasiKurir());
+        // Notification::send($users, new OrderOnprogress());
+
+        return redirect(route('WaitPaymentConfirmation'));
         } catch (\Exception $e) {
             return  $e->getMessage();
         }
@@ -300,7 +323,13 @@ class OrderController extends Controller
 
     function KurirConfirmOrder($id)
     {
-        // return $id;          
+        // return $id;  
+        $order = order::where('id', $id)->get();
+        $customer_id = $order[0]->customer_id;
+        // return $customer_id;        
+        $users = User::where('id', $customer_id)->get();
+         
+                
         
         try {            
 
@@ -318,6 +347,7 @@ class OrderController extends Controller
             ->update(array('pengiriman_id' => $pengiriman_id[0]->id));
     
             Alert::success('Order Berhasil Dikonfirmasi', 'Silahkan Melanjutkan Proses Pengurusan Tilang');
+            Notification::send($users, new OrderOnprogress());
             // Alert::toast('Data Berhasil ditambahkan','success');
             return redirect(route('GetAllPendingOrder'));
             } catch (\Exception $e) {
@@ -332,22 +362,22 @@ class OrderController extends Controller
 
         if ($role == 'admin') {
             $order = order::whereHas('pengiriman', function ($query) use($id) {
-                $query->where('diterima', '!=', 'ok');
+                $query->where('diterima', '=', null);
             })
                     ->where('status_data', 'valid')                    
                     ->where('status_pembayaran', 'paid')  
-                    ->where('pengiriman_id', '!=' ,'0')                 
+                    ->where('pengiriman_id', '!=' ,null)                 
                     ->get();  
             // return $order;      
             return view('admin.onprogress_order', compact('order'));
         }
         elseif ($role == 'kurir'){
             $order = order::whereHas('pengiriman', function ($query) use($id) {
-                $query->where('diterima', '!=', 'ok');
+                $query->where('diterima', '=', null);
             })
                     ->where('status_data', 'valid')                    
                     ->where('status_pembayaran', 'paid')  
-                    ->where('pengiriman_id', '!=' ,'0')    
+                    ->where('pengiriman_id', '!=' ,null)    
                     ->where('kurir_id', $id)             
                     ->get();  
             // return $order;      
@@ -355,11 +385,11 @@ class OrderController extends Controller
         }
         elseif ($role == 'customer'){
             $order = order::whereHas('pengiriman', function ($query) use($id) {
-                $query->where('diterima', '!=', 'ok');
+                $query->where('diterima', '=', null);
             })
                     ->where('status_data', 'valid')                    
                     ->where('status_pembayaran', 'paid')  
-                    ->where('pengiriman_id', '!=' ,'0')    
+                    ->where('pengiriman_id', '!=' ,null)    
                     ->where('customer_id', $id)             
                     ->get();  
             // return $order;      
@@ -384,10 +414,18 @@ class OrderController extends Controller
 
     function UpdateStatusPengiriman(Request $request)
     {
+
+        $order = order::where('pengiriman_id', $request['id'])->get();
+        $customer_id = $order[0]->customer_id;
+        // return $customer_id;        
+        $users = User::where('id', $customer_id)->get();
+        
         // return  $request;
         try {        
 
-            
+            if ($request['diterima'] != null) {
+                Notification::send($users, new OrderComplete());
+            }            
 
             $kurir_id = DB::table('users')
                         ->where('status_kurir', 'available')                    
@@ -404,7 +442,9 @@ class OrderController extends Controller
                 'nama_penerima' => $request['nama_penerima'],
             ));
             
-        Alert::success('Status Pengirim Berhasil Diupdate');        
+            
+        Alert::success('Status Pengirim Berhasil Diupdate'); 
+                 
         return redirect(route('GetAllOnprogressOrder'));
         } catch (\Exception $e) {
             return  $e->getMessage();
@@ -422,7 +462,7 @@ class OrderController extends Controller
 
         // return $users;
 
-        Notification::send($users, new NeedPayment());
+        // Notification::send($users, new NeedPayment());
 
         $role = Auth::user()->role;
         $id   = Auth::user()->id;

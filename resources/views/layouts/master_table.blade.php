@@ -150,7 +150,7 @@
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>
                   Pending
-                  <span class="right badge badge-danger">5</span>
+                  {{-- <span class="right badge badge-danger">5</span> --}}
                   </p>
                 </a>
               </li>
@@ -160,7 +160,7 @@
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>
                   Wait Payment
-                  <span class="right badge badge-danger">5</span>
+                  {{-- <span class="right badge badge-danger">5</span> --}}
                   </p>
                 </a>
               </li>
@@ -171,7 +171,7 @@
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>
                   Wait Confirmation
-                  <span class="right badge badge-danger">5</span>
+                  {{-- <span class="right badge badge-danger">5</span> --}}
                   </p>
                 </a>
               </li>

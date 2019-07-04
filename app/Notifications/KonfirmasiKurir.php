@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class NeedPayment extends Notification
+class KonfirmasiKurir extends Notification
 {
     use Queueable;
 
@@ -41,9 +41,9 @@ class NeedPayment extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('Pesanan Sudah berhasil divalidasi, silakah melakukan pembayaran ke :')
-                    ->action('BCA 901823123 a/n Kurir Tilang', url('/'))
-                    ->line('Mohon melakukan konfirmasi setelah pembayaran ');
+                    ->line('Kamu dapat Order masuk, silahkan melakukan konfirmasi.')
+                    ->action('Konfirmasi Order', url('/'))
+                    ->line('Silahkan menghubungi admin jika tidak bisa memproses');
     }
 
     /**

@@ -121,8 +121,22 @@
             </a>
           </li>
           @endcan
-          <li class="nav-item has-treeview">
-            <a href="#" class="nav-link">
+          <li class="nav-item has-treeview 
+          {{ request()->is('GetAllPendingOrder*') ? 'menu-open' : '' }}  
+          {{ request()->is('GetAllUnpaidOrder*') ? 'menu-open' : '' }}
+          {{ request()->is('WaitPaymentConfirmation*') ? 'menu-open' : '' }}
+          {{ request()->is('GetAllOnprogressOrder*') ? 'menu-open' : '' }}
+          {{ request()->is('GetAllCompleteOrder*') ? 'menu-open' : '' }}
+          ">
+          
+            <a href="#" class="nav-link 
+            {{ request()->is('GetAllPendingOrder*') ? 'active' : '' }}
+            {{ request()->is('GetAllUnpaidOrder*') ? 'active' : '' }}
+            {{ request()->is('WaitPaymentConfirmation*') ? 'active' : '' }}
+            {{ request()->is('GetAllOnprogressOrder*') ? 'active' : '' }}
+            {{ request()->is('GetAllCompleteOrder*') ? 'active' : '' }}
+            ">
+
               <i class="nav-icon fa fa-pie-chart"></i>
               <p>
                 Order
@@ -131,45 +145,45 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('GetAllPendingOrder') }}" class="nav-link">
+                <a href="{{ route('GetAllPendingOrder') }}" class="nav-link {{ request()->is('GetAllPendingOrder*') ? 'active' : '' }}">
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>
                   Pending
-                  <span class="right badge badge-danger">5</span>
+                  {{-- <span class="right badge badge-danger">5</span> --}}
                   </p>
                 </a>
               </li>
               @if(Gate::check('isCustomer') || Gate::check('isAdmin'))
               <li class="nav-item">
-                <a href="{{ route('GetAllUnpaidOrder') }}" class="nav-link">
+                <a href="{{ route('GetAllUnpaidOrder') }}" class="nav-link {{ request()->is('GetAllUnpaidOrder*') ? 'active' : '' }}">
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>
                   Wait Payment
-                  <span class="right badge badge-danger">5</span>
+                  {{-- <span class="right badge badge-danger">5</span> --}}
                   </p>
                 </a>
               </li>
               @endif
               @if(Gate::check('isCustomer') || Gate::check('isAdmin'))
               <li class="nav-item">
-                <a href="{{ route('WaitPaymentConfirmation') }}" class="nav-link">
+                <a href="{{ route('WaitPaymentConfirmation') }}" class="nav-link {{ request()->is('WaitPaymentConfirmation*') ? 'active' : '' }}">
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>
                   Wait Confirmation
-                  <span class="right badge badge-danger">5</span>
+                  {{-- <span class="right badge badge-danger">5</span> --}}
                   </p>
                 </a>
               </li>
               @endif
               {{-- @endcan --}}
               <li class="nav-item">
-                <a href="{{ route('GetAllOnprogressOrder') }}" class="nav-link">
+                <a href="{{ route('GetAllOnprogressOrder') }}" class="nav-link {{ request()->is('GetAllOnprogressOrder*') ? 'active' : '' }}">
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>On Progress</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('GetAllCompleteOrder') }}" class="nav-link">
+                <a href="{{ route('GetAllCompleteOrder') }}" class="nav-link {{ request()->is('GetAllCompleteOrder*') ? 'active' : '' }}">
                   <i class="fa fa-circle-o nav-icon"></i>
                   <p>Complete</p>
                 </a>

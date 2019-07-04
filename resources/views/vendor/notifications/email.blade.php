@@ -50,8 +50,8 @@
 @isset($actionText)
 @slot('subcopy')
 @lang(
-    "If you’re having trouble clicking the \":actionText\" button, copy and paste the URL below\n".
-    'into your web browser: [:actionURL](:actionURL)',
+    "Jika mengalami kesulitan silahkan menghubungi admin\n".
+    '+6282336805671:',
     [
         'actionText' => $actionText,
         'actionURL' => $actionUrl,

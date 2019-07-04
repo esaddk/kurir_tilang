@@ -23,7 +23,7 @@
   <!-- Default box -->
   <div class="card">
     <div class="card-header">
-      <h3 class="card-title">Validasi Admin</h3>
+      <h3 class="card-title">Konfirmasi Pembayaran</h3>
 
       <div class="card-tools">
         <button type="button" class="btn btn-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
@@ -35,7 +35,7 @@
     <div class="card-body">
         <div class="card card-primary">
             <div class="card-header">
-              <h3 class="card-title">Form Validasi</h3>
+              <h3 class="card-title">Upload Bukti Transfer</h3>
             </div>
             <!-- /.card-header -->
             <!-- form start -->

@@ -61,7 +61,7 @@
                 </div>
                 
                 <div class="form-group">
-                        <label>Ongkos Kirim</label>
+                        <label>Total Harus Bayar</label>
                   <input id="biaya_kirim" readonly value="{{ $order->biaya_kirim }}" type="number" class="form-control @error('biaya_kirim') is-invalid @enderror" name="biaya_kirim"  required autocomplete="penerima" > 
                 </div>  
                 <div class="form-group">
