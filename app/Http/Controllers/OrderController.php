@@ -3,15 +3,19 @@
 namespace App\Http\Controllers;
 
 use File;
+use App\User;
+use App\kurir;
 use App\order;
+use Notification;
 use Carbon\Carbon;
+use App\pengiriman;
 use Illuminate\Http\Request;
+use Nexmo\Laravel\Facade\Nexmo;
+use App\Notifications\NeedPayment;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Intervention\Image\Facades\Image;
 use RealRashid\SweetAlert\Facades\Alert;
-use App\kurir;
-use App\pengiriman;
 
 class OrderController extends Controller
 {    
@@ -34,6 +38,15 @@ class OrderController extends Controller
             return 'KT-'. $unique_code . $count;
         }
         return 'KT-'.$unique_code.'1';
+    }
+
+    public function sendSMS()
+    {
+        Nexmo::message()->send([
+            'to'   => '+6282242711989',
+            'from' => '16105552344',
+            'text' => 'Salam hangat dari Kurir Tilang :D'
+        ]);
     }
 
     private function saveFile($name, $photo)
@@ -374,6 +387,8 @@ class OrderController extends Controller
         // return  $request;
         try {        
 
+            
+
             $kurir_id = DB::table('users')
                         ->where('status_kurir', 'available')                    
                         ->orderBy('updated_at', 'ASC')
@@ -398,6 +413,17 @@ class OrderController extends Controller
 
     public function GetAllCompleteOrder()
     {
+        // $this->sendSMS();
+        // $users= DB::table('users')
+        // ->where('id', '3')                            
+        // ->get();
+
+        $users = User::where('id', 3)->get();
+
+        // return $users;
+
+        Notification::send($users, new NeedPayment());
+
         $role = Auth::user()->role;
         $id   = Auth::user()->id;
 
