@@ -20,29 +20,71 @@
 
 <!-- Main content -->
 <section class="content">
-
+  <div class="container-fluid">
   <!-- Default box -->
-  <div class="card">
-    <div class="card-header">
-      <h3 class="card-title">Title</h3>
+  <div class="row">
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-info">
+        <div class="inner">
+          <h3>3</h3>
 
-      <div class="card-tools">
-        <button type="button" class="btn btn-tool" data-widget="collapse" data-toggle="tooltip" title="Collapse">
-          <i class="fa fa-minus"></i></button>
-        <button type="button" class="btn btn-tool" data-widget="remove" data-toggle="tooltip" title="Remove">
-          <i class="fa fa-times"></i></button>
+          <p>Total Order</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-stats-bars"></i>
+        </div>
+        {{-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> --}}
       </div>
     </div>
-    <div class="card-body">
-      Start creating your amazing application!
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-success">
+        <div class="inner">
+          <h3>2<sup style="font-size: 20px"></sup></h3>
+
+          <p>Order Complete</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-ios-checkmark          "></i>
+        </div>
+        {{-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> --}}
+      </div>
     </div>
-    <!-- /.card-body -->
-    <div class="card-footer">
-      Footer
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-warning">
+        <div class="inner">
+          <h3>1</h3>
+
+          <p>Order On Progress</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-arrow-return-right          "></i>
+        </div>
+        {{-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> --}}
+      </div>
     </div>
-    <!-- /.card-footer-->
+    <!-- ./col -->
+    <div class="col-lg-3 col-6">
+      <!-- small box -->
+      <div class="small-box bg-danger">
+        <div class="inner">
+          <h3>1</h3>
+
+          <p>Waiting Payment</p>
+        </div>
+        <div class="icon">
+          <i class="ion ion-ios-alarm          "></i>
+        </div>
+        {{-- <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a> --}}
+      </div>
+    </div>
+    <!-- ./col -->
   </div>
   <!-- /.card -->
-
+  </div>
 </section>
 @endsection

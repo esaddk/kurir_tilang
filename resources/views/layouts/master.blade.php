@@ -98,9 +98,18 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-
+          @if(Gate::check('isCustomer') || Gate::check('isAdmin'))
+          <li class="nav-item">
+            <a href="{{ url('/') }}" class="nav-link {{ request()->is('/*') ? 'active' : '' }}">
+              <i class="nav-icon fa fa-home"></i>
+              <p>
+                Home                
+              </p>
+            </a>            
+          </li>
+          @endif
           {{-- @can('isAdmin') --}}
-          @if(Gate::check('isKurir') || Gate::check('isAdmin'))
+          {{-- @if(Gate::check('isKurir') || Gate::check('isAdmin')) --}}
           <li class="nav-item">
             <a href="{{ route('dashboard') }}" class="nav-link {{ request()->is('dashboard*') ? 'active' : '' }}">
               <i class="nav-icon fa fa-dashboard"></i>
@@ -109,7 +118,7 @@
               </p>
             </a>            
           </li>
-          @endif
+          {{-- @endif --}}
           {{-- @endcan --}}
           @can('isCustomer')
           <li class="nav-item">
@@ -192,7 +201,7 @@
           </li>
           @can('isAdmin') 
           <li class="nav-item">
-              <a href="../widgets.html" class="nav-link">
+              <a href="{{ route('GetMasterData') }}" class="nav-link">
                 <i class="nav-icon fa fa-th"></i>
                 <p>
                   Master Petugas

@@ -15,6 +15,8 @@
   <link rel="stylesheet" href="{{ asset('adminlte/dist/css/adminlte.min.css')}}">
   <link rel="stylesheet" href="adminlte/plugins/datatables/dataTables.bootstrap4.css">
   <link rel="stylesheet" href="{{url('/css/sweetalert.css')}}">
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.css">
+
   
 
   <!-- Google Font: Source Sans Pro -->
@@ -101,6 +103,14 @@
                with font-awesome or any other icon font library -->
 
           {{-- @can('isAdmin') --}}
+          <li class="nav-item">
+            <a href="{{ url('/') }}" class="nav-link {{ request()->is('/*') ? 'active' : '' }}">
+              <i class="nav-icon fa fa-home"></i>
+              <p>
+                Home                
+              </p>
+            </a>            
+          </li>
           @if(Gate::check('isKurir') || Gate::check('isAdmin'))
           <li class="nav-item">
             <a href="{{ route('dashboard') }}" class="nav-link {{ request()->is('dashboard*') ? 'active' : '' }}">
@@ -273,6 +283,7 @@
 
 <script src="{{ asset('adminlte/plugins/datatables/jquery.dataTables.js')}}"></script>
 <script src="{{ asset('adminlte/plugins/datatables/dataTables.bootstrap4.js')}}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/1.1.3/sweetalert.min.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="{{ asset('adminlte/dist/js/demo.js')}}"></script>
 <script src="{{ asset('js/sweetalert.min.js')}}"></script>

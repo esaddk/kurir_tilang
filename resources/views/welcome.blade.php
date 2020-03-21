@@ -22,7 +22,8 @@
 					<ul>
                         @if (Route::has('login'))
                         @auth
-                        <li><a href="{{ route('CreateOrder') }}">Make Order</a></li>
+						<li><a href="{{ route('CreateOrder') }}">Make Order</a></li>
+						<li><a href="{{ route('logout') }}">Logout</a></li>
                         @else
                         <li><a href="{{ route('login') }}">Login</a></li>
                         @if (Route::has('register'))
@@ -44,8 +45,8 @@
 			<div class="container">
 				<div class="hero__content">
 					<div class="hero__content__inner" id='navConverter'>
-						<h1 class="hero__title">Ketilang ? Udah Kurir-in Aja !!</h1>
-						<p class="hero__title">Solusi Buat Kamu Yang Lagi Mager Pas Ngurus Tilang.</p>
+						<h1 class="hero__title" style="font-size: 3.074rem;">Ketilang ? Udah Kurir-in Aja !!</h1>
+						<p class="hero__title" style="font-size: 1.374rem;">Solusi Buat Kamu Yang Lagi Mager Pas Ngurus Tilang.</p>
 						
 						<!-- <a href="#" class="button button__accent">Download Evie</a>
 						<a href="#" class="button hero__button">Learn more</a> -->

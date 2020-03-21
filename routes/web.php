@@ -55,5 +55,7 @@ Route::post('/UpdateStatusPengiriman', 'OrderController@UpdateStatusPengiriman')
 Route::get('/GetAllCompleteOrder', 'OrderController@GetAllCompleteOrder')->name('GetAllCompleteOrder');
 Route::get('/DetailOrder/{id}', 'OrderController@DetailOrder')->name('DetailOrder');
 
+// Get MAster DAta
+Route::get('/GetMasterData', 'HomeController@GetMasterData')->name('GetMasterData');
 
 
